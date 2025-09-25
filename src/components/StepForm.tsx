@@ -1,5 +1,4 @@
 // Components/StepForm.tsx
-
 import type { FC } from "react";
 import { useState, useEffect } from "react";
 import Button from "./common/Button";
@@ -264,7 +263,7 @@ const StepForm: FC = () => {
   const progressPercentage = ((currentStepIndex + 1) / steps.length) * 100;
 
   return (
-    <div className="w-full h-screen py-30">
+    <div className="w-full py-10">
       <div className="w-[70%] mx-auto border border-gray-800 p-10 rounded-[30px] shadow-md bg-[#030014]">
         {/* Progress Bar */}
         <div className="w-full bg-gray-800 rounded-full h-1 mb-10 overflow-hidden">

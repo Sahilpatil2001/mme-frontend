@@ -16,16 +16,14 @@ const Button: FC<ButtonProps> = ({
   disabled = false,
 }) => {
   return (
-    <div>
-      <button
-        type={type}
-        onClick={onClick}
-        disabled={disabled}
-        className={`py-3 bg-purple-700 text-white font-semibold rounded-[10px] cursor-pointer hover:bg-purple-800 transition duration-200 shadow-md shadow-purple-800 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
-      >
-        {children}
-      </button>
-    </div>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`py-3 px-6 bg-purple-700 text-white font-semibold rounded-[10px] cursor-pointer hover:bg-purple-800 transition duration-200 ease-in-out shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+    >
+      {children}
+    </button>
   );
 };
 

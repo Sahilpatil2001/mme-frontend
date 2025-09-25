@@ -21,7 +21,7 @@ import UserProfile from "./components/Dashboard/UserProfile";
 
 const App: FC = () => {
   return (
-    <div className="w-full container mx-auto">
+    <div className="w-full container mx-auto bg-transparent border-b-red-600">
       <Routes>
         {/* Main layout with AsideBar */}
         <Route element={<MainLayout />}>

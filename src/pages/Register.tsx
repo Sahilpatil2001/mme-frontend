@@ -135,7 +135,7 @@ const Register: FC = () => {
 
       localStorage.setItem("token", firebaseToken);
       showSuccessToast("Registered with Google!");
-      navigate("/");
+      navigate("/login");
     } catch (error: any) {
       console.error("Google register error:", error.message);
       showErrorToast(error.message || "Google sign-up failed.");
@@ -143,97 +143,100 @@ const Register: FC = () => {
   };
 
   return (
-    <section className="w-full">
+    <section className="w-full min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={formHandle}
-        className="w-full flex justify-center h-screen items-center"
+        className="w-full max-w-3xl bg-[#030014] p-8 rounded-2xl shadow-lg flex flex-col items-center gap-8"
       >
-        <div className="w-[60%] flex flex-col justify-center items-center gap-8">
-          <h1 className="text-3xl font-medium text-center mb-3">
-            Create Your Account
-          </h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold text-center text-white mb-6">
+          Create Your Account
+        </h1>
 
-          <div className="flex w-full justify-center space-x-8">
-            <FormInput
-              onChange={handleChange}
-              placeholder="Enter your First name"
-              type="text"
-              name="firstName"
-              value={userDetails.firstName}
-              className="w-[40%]"
-            />
-            <FormInput
-              onChange={handleChange}
-              placeholder="Enter Your Last Name"
-              type="text"
-              name="lastName"
-              value={userDetails.lastName}
-              className="w-[40%]"
-            />
-          </div>
+        {/* First Name & Last Name */}
+        <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-8">
+          <FormInput
+            onChange={handleChange}
+            placeholder="Enter your First Name"
+            type="text"
+            name="firstName"
+            value={userDetails.firstName}
+            className="flex-1"
+          />
+          <FormInput
+            onChange={handleChange}
+            placeholder="Enter Your Last Name"
+            type="text"
+            name="lastName"
+            value={userDetails.lastName}
+            className="flex-1"
+          />
+        </div>
 
-          <div className="flex w-full justify-center space-x-8">
-            <FormInput
-              onChange={handleChange}
-              placeholder="Enter Your Email"
-              type="email"
-              name="email"
-              value={userDetails.email}
-              className="w-[40%]"
-            />
-            <FormInput
-              onChange={handleChange}
-              placeholder="Enter Your Password"
-              type="password"
-              name="password"
-              value={userDetails.password}
-              className="w-[40%]"
-            />
-          </div>
+        {/* Email & Password */}
+        <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-8">
+          <FormInput
+            onChange={handleChange}
+            placeholder="Enter Your Email"
+            type="email"
+            name="email"
+            value={userDetails.email}
+            className="flex-1"
+          />
+          <FormInput
+            onChange={handleChange}
+            placeholder="Enter Your Password"
+            type="password"
+            name="password"
+            value={userDetails.password}
+            className="flex-1"
+          />
+        </div>
 
-          <div className="flex w-full justify-center space-x-8">
-            <FormInput
-              onChange={handleChange}
-              placeholder="Date Of Birth"
-              type="date"
-              name="dob"
-              value={userDetails.dob}
-              className="w-[40%]"
-            />
+        {/* DOB & Gender */}
+        <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-8">
+          <FormInput
+            onChange={handleChange}
+            placeholder="Date Of Birth"
+            type="date"
+            name="dob"
+            value={userDetails.dob}
+            className="flex-1"
+          />
+          <select
+            onChange={handleChange}
+            name="gender"
+            value={userDetails.gender}
+            className="flex-1 border border-[#fff9] py-3 px-4 rounded-lg outline-none bg-[#030014] text-white"
+          >
+            <option value="" disabled>
+              Select Gender
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
 
-            <select
-              onChange={handleChange}
-              name="gender"
-              value={userDetails.gender}
-              className="w-[40%] border border-[#fff9] py-4 px-4 rounded-[10px] outline-none indent-1"
-            >
-              <option value="" disabled>
-                Select Gender
-              </option>
-              <option value="Male" className="bg-[#030014]">
-                Male
-              </option>
-              <option value="Female" className="bg-[#030014]">
-                Female
-              </option>
-            </select>
-          </div>
+        {/* Register Button & Google Sign Up */}
+        <div className="flex flex-col w-full gap-5 items-center mt-4">
+          <Button type="submit" className="px-40 tracking-wide">
+            Register
+          </Button>
 
-          <div className="w-full flex flex-col gap-5 items-center">
-            <Button type="submit" className="px-31">
-              Register
-            </Button>
-            <h1 className="text-center text-xl font-medium">OR</h1>
-            <GoogleLoginButton className="px-15" onClick={handleGoogleRegister}>
-              Sign up with google
-            </GoogleLoginButton>
-            <div className="mt-4 text-center text-md text-gray-500 tracking-wide">
-              Already have an account ?
-              <Link to="/login" className="text-purple-600 font-medium ml-2">
-                Login
-              </Link>
-            </div>
-          </div>
+          <h2 className="text-center text-xl font-medium text-gray-300">OR</h2>
+
+          <GoogleLoginButton
+            className="w-full sm:w-1/2 mt-4 py-3 flex items-center justify-center rounded-lg text-white font-medium transition"
+            onClick={handleGoogleRegister}
+          >
+            Sign up with Google
+          </GoogleLoginButton>
+
+          <p className="text-center text-gray-400 text-sm sm:text-base mt-4">
+            Already have an account?{" "}
+            <Link to="/login" className="text-purple-500 font-medium ml-1">
+              Login
+            </Link>
+          </p>
         </div>
       </form>
     </section>

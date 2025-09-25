@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import AdminSettings from "../components/Dashboard/AdminSettings";
 import { auth } from "../Firebase";
-// import UserProfile from "../components/Dashboard/UserProfile";
+import type { User } from "firebase/auth";
+// import AdminSettings from "../components/Dashboard/AdminSettings";
+import { onAuthStateChanged } from "firebase/auth";
+import UserProfile from "../components/Dashboard/UserProfile";
 
 const Dashboard: FC = () => {
   const [userName, setUserName] = useState<string>("");
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = auth.currentUser;
-        if (!user) return;
+    // Listen for auth state changes
+    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
+      if (!user) {
+        setUserName("");
+        return;
+      }
 
-        // ✅ Force refresh to ensure token is valid
+      try {
+        // Force refresh token to get latest
         const token = await user.getIdToken(true);
 
         const res = await fetch("http://localhost:8000/api/get-user", {
@@ -28,24 +33,25 @@ const Dashboard: FC = () => {
         }
 
         const data = await res.json();
-        console.log(data.firstName);
         setUserName(data.firstName);
       } catch (err) {
         console.error("Error fetching user:", err);
       }
-    };
+    });
 
-    fetchUser();
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex w-full">
       <div className="py-10 px-10 space-y-8 w-full">
         <h1 className="text-2xl font-semibold">
-          {userName ? `Welcome, ${userName} 👋` : "Welcome"}
+          {userName ? `Welcome, ${userName} 👋` : "Welcome, user 👋"}
         </h1>
 
-        <AdminSettings />
+        {/* <AdminSettings /> */}
+        <UserProfile />
       </div>
     </div>
   );

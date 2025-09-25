@@ -108,51 +108,53 @@ const LoginForm: FC = () => {
   };
 
   return (
-    <section className="w-full">
+    <section className="w-full min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={handleLogin}
-        className="w-full flex flex-col h-screen justify-center items-center"
+        className="w-full max-w-md bg-[#030014] p-8 rounded-2xl shadow-lg flex flex-col items-center"
       >
-        <div className="w-[60%]">
-          <h1 className="text-3xl font-medium text-center mb-9">Login</h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold text-center mb-8 text-white">
+          Login
+        </h1>
 
-          <div className="w-full flex flex-col items-center gap-8">
-            <FormInput
-              onChange={handleLoginChange}
-              placeholder="Enter your Email"
-              type="email"
-              name="email"
-              value={loginDetails.email}
-              className="w-[40%]"
-            />
-            <FormInput
-              onChange={handleLoginChange}
-              placeholder="Enter Your Password"
-              type="password"
-              name="password"
-              value={loginDetails.password}
-              className="w-[40%]"
-            />
+        <div className="w-full flex flex-col gap-6">
+          <FormInput
+            onChange={handleLoginChange}
+            placeholder="Enter your Email"
+            type="email"
+            name="email"
+            value={loginDetails.email}
+            className="w-full"
+          />
+          <FormInput
+            onChange={handleLoginChange}
+            placeholder="Enter Your Password"
+            type="password"
+            name="password"
+            value={loginDetails.password}
+            className="w-full"
+          />
 
-            <div className="flex flex-col gap-10 items-center">
-              <Button type="submit" className="w-full px-40 tracking-wide">
-                Login
-              </Button>
+          <Button type="submit" className="w-full px-40 tracking-wide">
+            Login
+          </Button>
 
-              <p className="text-gray-500">
-                Don't have an account?
-                <span
-                  onClick={() => navigate("/register")}
-                  className="text-purple-500 font-medium cursor-pointer ml-2"
-                >
-                  Register Here
-                </span>
-              </p>
-              <GoogleLoginButton className="px-19" onClick={handleGoogleLogin}>
-                Continue with google
-              </GoogleLoginButton>
-            </div>
-          </div>
+          <p className="text-gray-400 text-center mt-4 text-sm sm:text-base">
+            Don't have an account ?{" "}
+            <span
+              onClick={() => navigate("/register")}
+              className="text-purple-500 font-medium cursor-pointer"
+            >
+              Register Here
+            </span>
+          </p>
+
+          <GoogleLoginButton
+            className="w-full mt-4 py-3 flex items-center justify-center rounded-lg text-white font-medium transition"
+            onClick={handleGoogleLogin}
+          >
+            Continue with Google
+          </GoogleLoginButton>
         </div>
       </form>
     </section>

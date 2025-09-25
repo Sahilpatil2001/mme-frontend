@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import FormInput from "../common/FormInput";
 import Button from "../common/Button";
 import { showSuccessToast, showErrorToast } from "../../utils/toastHelper";
-import { auth } from "../../Firebase"; // ✅ import Firebase auth
+import { auth } from "../../Firebase";
 import type { User } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 
