@@ -15,13 +15,14 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import CreateAudio from "./components/CreateAudio";
-import MyAudios from "./components/MyAudios";
+// import MyAudios from "./components/MyAudios";
 import Dashboard from "./pages/Dashboard";
 import UserProfile from "./components/Dashboard/UserProfile";
+import DemoAudiosPage from "./components/DemoAudiosPage";
 
 const App: FC = () => {
   return (
-    <div className="w-full container mx-auto bg-transparent border-b-red-600">
+    <div className="w-full container mx-auto bg-transparent">
       <Routes>
         {/* Main layout with AsideBar */}
         <Route element={<MainLayout />}>
@@ -33,14 +34,25 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-          <Route
+
+          {/* <Route
             path="/my-audios"
             element={
               <ProtectedRoute>
                 <MyAudios />
               </ProtectedRoute>
             }
+          /> */}
+
+          <Route
+            path="/my-audios"
+            element={
+              <ProtectedRoute>
+                <DemoAudiosPage />
+              </ProtectedRoute>
+            }
           />
+
           <Route
             path="/step-form"
             element={

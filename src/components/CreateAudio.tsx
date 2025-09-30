@@ -1,11 +1,13 @@
 // ! ==========>> New Code <<==========
-
 import type { FC, ChangeEvent } from "react";
 import { useState, useEffect, useRef } from "react";
 import Button from "./common/Button";
 import type { Voice, CreateAudioProps } from "../types/CreateAudioTypes";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import type { User } from "firebase/auth";
 
 const CreateAudio: FC<CreateAudioProps> = ({ BASE_URL }) => {
+  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [voices, setVoices] = useState<Voice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null);
   const [text, setText] = useState<string>("");
@@ -15,21 +17,47 @@ const CreateAudio: FC<CreateAudioProps> = ({ BASE_URL }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchVoices = async () => {
+    const auth = getAuth();
+    let unsubscribe = () => {};
+
+    unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
+      if (!user) {
+        console.error("❌ No authenticated user. Redirect to login.");
+        setFirebaseUser(null);
+        return;
+      }
+      setFirebaseUser(user);
+
       try {
-        const res = await fetch(`${BASE_URL}/api/voices`);
+        const idToken = await user.getIdToken(true);
+
+        const res = await fetch(`${BASE_URL}/api/voices`, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        });
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(
+            `Failed to fetch voices: ${res.status} - ${errorText}`
+          );
+        }
+
         const data = await res.json();
-        if (data.voices?.length) {
+        if (data.voices?.length > 0) {
           setVoices(data.voices);
           setSelectedVoice(data.voices[0]);
         }
-      } catch (error) {
-        console.error("Failed to fetch voices:", error);
+      } catch (err) {
+        console.error("🚨 Error fetching voices:", err);
       }
-    };
-    fetchVoices();
+    });
+
+    return () => unsubscribe();
   }, [BASE_URL]);
 
+  // ✅ Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -45,6 +73,11 @@ const CreateAudio: FC<CreateAudioProps> = ({ BASE_URL }) => {
 
   // ✅ Accepts a voice object
   const playAudio = async (voice: Voice) => {
+    if (!firebaseUser) {
+      alert("User not authenticated. Please login.");
+      return;
+    }
+
     if (!text.trim()) {
       alert("Please enter text before generating audio.");
       return;
@@ -70,9 +103,14 @@ const CreateAudio: FC<CreateAudioProps> = ({ BASE_URL }) => {
     setAudioUrl(null);
 
     try {
+      //  🔑 Get fresh Firebase ID token
+      const idToken = await firebaseUser.getIdToken(true);
       const res = await fetch(`${BASE_URL}/api/merge-audio`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
         body: JSON.stringify({ voiceId, sentences }),
       });
 
@@ -82,7 +120,14 @@ const CreateAudio: FC<CreateAudioProps> = ({ BASE_URL }) => {
       }
 
       const blob = await res.blob();
-      setAudioUrl(URL.createObjectURL(blob));
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+
+      // 🔹 Optional: if you want request IDs from headers
+      const requestIdHeader = res.headers.get("request-id");
+      if (requestIdHeader) {
+        console.log("🆔 Last 3 request IDs:", requestIdHeader);
+      }
     } catch (error) {
       console.error("ERROR:", error);
       alert("Failed to generate audio. Check console for details.");
