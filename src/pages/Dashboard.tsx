@@ -45,7 +45,7 @@ const Dashboard: FC = () => {
 
   return (
     <div className="flex w-full">
-      <div className="py-10 px-10 space-y-8 w-full">
+      <div className="w-full px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 space-y-6 sm:space-y-8 md:space-y-10">
         {/* <h1 className="text-2xl font-semibold">
           {userName ? `Welcome, ${userName} 👋` : "Welcome, user 👋"}
         </h1> */}

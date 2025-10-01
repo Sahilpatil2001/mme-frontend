@@ -16,8 +16,8 @@ const AudioCard: FC<AudioCardProps> = ({
   onDelete,
 }) => {
   return (
-    <div className="flex items-center justify-between bg-[#040D3C] rounded-xl shadow-md overflow-hidden">
-      {/* Play Button */}
+    <div className="flex items-center justify-between bg-[#040D3C] rounded-xl shadow-md overflow-hidden w-full">
+      {/* Play Button at the left edge */}
       <button
         onClick={() => onPlay(audio.id)}
         className="flex items-center justify-center bg-[#F97316] text-white w-18 h-18 flex-shrink-0"
@@ -26,19 +26,18 @@ const AudioCard: FC<AudioCardProps> = ({
       </button>
 
       {/* Middle Content */}
-      <div className="flex flex-col flex-1 px-4 text-white truncate">
+      <div className="flex flex-col flex-1 mx-4 text-white truncate">
         <span className="font-medium truncate tracking-wider">
           {audio.title}
         </span>
-        <div className="flex items-center gap-6 text-sm text-gray-300 mt-1">
+        <div className="flex items-center gap-4 text-sm text-gray-300 mt-1">
           <span className="text-[#F97316]">{audio.duration}</span>
-
           <span className="text-[#F97316]">{audio.date}</span>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center">
+      {/* Action Buttons at the right edge */}
+      <div className="flex items-center gap-2">
         <button
           onClick={() => onDownload(audio.id)}
           className="flex items-center justify-center bg-[#F97316] w-18 h-18 text-white hover:opacity-90 transition"

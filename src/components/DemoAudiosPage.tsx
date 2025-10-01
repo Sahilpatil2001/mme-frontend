@@ -74,7 +74,7 @@ export default function DemoAudiosPage() {
     setAudios((prev) => prev.filter((a) => a.id !== id));
 
   return (
-    <div className="px-10 py-10 w-[90%] max-w-[700px] mx-auto">
+    <div className="w-full max-w-[700px] px-4 sm:px-6 md:px-8 lg:px-10 py-6 sm:py-8 md:py-10 mx-auto">
       <h2 className="text-2xl font-bold text-white mb-8">My Audios</h2>
       <AudioList
         audios={audios}
